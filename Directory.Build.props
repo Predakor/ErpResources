@@ -1,0 +1,36 @@
+﻿<Project>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<AnalysisLevel>latest</AnalysisLevel>
+		<AnalysisMode>all</AnalysisMode>
+		<TreatErrorsAsWarnings>true</TreatErrorsAsWarnings>
+		<CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
+		<UserSecretsId>c3dc57f9-4531-4157-9db2-1c74dbf30c60</UserSecretsId>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<NoWarn>$(NoWarn);CA2007</NoWarn>
+	</PropertyGroup>
+	
+	
+	<ItemGroup Condition="'$(MSBuildProjectExtension)' != '.dcproj'">
+		<ProjectReference Include="..\Core\Core.csproj" Condition="'$(MSBuildProjectName)' != 'Core'" />
+
+		<PackageReference Include="SonarAnalyzer.CSharp">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(MSBuildProjectName)' != 'Core'">
+		<Using Include="Core.Results"  />
+		<Using Include="Core.Validators"  />
+		<Using Include="Core.Extentions"  />
+		<Using Include="Core.Abstractions"  />
+	</ItemGroup>
+</Project>

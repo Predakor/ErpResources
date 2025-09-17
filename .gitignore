@@ -36,10 +36,16 @@ ScaffoldingReadMe.txt
 # NuGet Symbol Packages
 *.snupkg
 
+#Server Upload Files
+/Api/wwwroot/uploads
+
 # Others
 ~$*
 *~
 CodeCoverage/
+.vs/
+/packages/
+
 
 # MSBuild Binary and Structured Log
 *.binlog
