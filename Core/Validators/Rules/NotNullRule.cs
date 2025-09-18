@@ -2,7 +2,7 @@
 
 namespace Core.Validators.Rules;
 
-internal class NotNullRule<T>(T value) : IRule {
+internal sealed class NotNullRule<T>(T value) : IRule {
     public string Name => "Invalid value";
 
     public string Message => "Value cannot be null";

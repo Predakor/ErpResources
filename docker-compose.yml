@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  gateway:
+    build: ./backend/Gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - employeeservice
+      - inventoryservice
+
+  employeeservice:
+    build: ./backend/Services/EmployeeService
+    ports:
+      - "5001:8080"
+
+  inventoryservice:
+    build: ./backend/Services/InventoryService
+    ports:
+      - "5002:8080"
+
+  frontend:
+    build: ./frontend/web
+    ports:
+      - "3000:3000"
+    depends_on:
+      - gateway
