@@ -5,7 +5,7 @@ using Gateway.TimeShifts.Events;
 namespace Gateway.TimeShifts;
 
 internal class TimeShift : AggregateRoot {
-    public required Guid EmplyoerId { get; set; }
+    public Guid EmplyoerId { get; set; }
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
     public TimeSpan Breakes { get; set; }

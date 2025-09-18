@@ -17,16 +17,23 @@
 		<NoWarn>$(NoWarn);CA2007</NoWarn>
 	</PropertyGroup>
 	
-	
-	<ItemGroup Condition="'$(MSBuildProjectExtension)' != '.dcproj'">
-		<ProjectReference Include="..\Core\Core.csproj" Condition="'$(MSBuildProjectName)' != 'Core'" />
-
+	<ItemGroup Condition="'$(MSBuildProjectName)' != 'ErpResources.Tests'">
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+			<_Parameter1>ErpResources.Tests</_Parameter1>
+		</AssemblyAttribute>
+		
 		<PackageReference Include="SonarAnalyzer.CSharp">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
+		
+	<ItemGroup Condition="'$(MSBuildProjectExtension)' != '.dcproj'">
+		<ProjectReference Include="..\Core\Core.csproj" Condition="'$(MSBuildProjectName)' != 'Core'" />
 
+
+	</ItemGroup>
+	
 	<ItemGroup Condition="'$(MSBuildProjectName)' != 'Core'">
 		<Using Include="Core.Results"  />
 		<Using Include="Core.Validators"  />
