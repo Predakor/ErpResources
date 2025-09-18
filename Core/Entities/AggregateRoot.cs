@@ -1,10 +1,15 @@
 ﻿namespace Core.Entities;
 
-public abstract class AggregateRoot : Entity {
-    private readonly List<IEvent> _domainEvents = new();
-    public IReadOnlyCollection<IEvent> DomainEvents => _domainEvents.AsReadOnly();
+public interface IAggregateRoot {
+    IReadOnlyCollection<IEvent> Events { get; }
+    void ClearEvents();
+}
 
-    protected void AddDomainEvent(IEvent @event) => _domainEvents.Add(@event);
+public abstract class AggregateRoot : Entity, IAggregateRoot {
+    readonly List<IEvent> _domainEvents = new();
+    public IReadOnlyCollection<IEvent> Events => _domainEvents.AsReadOnly();
 
-    public void ClearDomainEvents() => _domainEvents.Clear();
+    protected void AddEvent(IEvent @event) => _domainEvents.Add(@event);
+
+    public void ClearEvents() => _domainEvents.Clear();
 }

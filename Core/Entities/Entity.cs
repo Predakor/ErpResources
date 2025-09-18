@@ -1,5 +1,10 @@
 ﻿namespace Core.Entities;
-public abstract class Entity {
+
+public interface IEntity {
+    Guid Id { get; }
+}
+
+public abstract class Entity : IEntity {
     public Guid Id { get; init; }
 
     protected Entity() {
