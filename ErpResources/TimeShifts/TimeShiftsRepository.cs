@@ -46,6 +46,11 @@ internal class TimeShiftsRepository : ITimeShiftsRepository {
         ISpecification<TimeShift>? spec,
         CancellationToken cancellationToken
     ) {
+
+        if (spec is null) {
+            return await _timeShifts.ToListAsync(cancellationToken);
+        }
+
         throw new NotImplementedException();
     }
 
