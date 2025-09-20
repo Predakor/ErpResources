@@ -15,7 +15,7 @@ internal static class TimeShiftEndpoints {
     }
 
     static async Task<IResult> GetTimeShifts(ISender sender) {
-        var query = new GetAllShiftsCommand();
+        var query = new GetAllShiftsQuery();
         return await sender
             .Send(query)
             .MatchAsync(
