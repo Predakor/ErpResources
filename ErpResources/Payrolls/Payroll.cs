@@ -21,12 +21,22 @@ internal class Payroll : AggregateRoot {
     public Guid EmployeId { get; private set; }
 
     public Employe? AprovedBy { get; private set; }
-    public Employe? Employe { get; private set; }
+    public Employe Employe { get; private set; } = default!;
 
-    public Payroll Calculate(Employe employe, ICollection<TimeShift> shifts) {
-        var totalHours = (decimal)shifts.Sum(s => s.Duration.TotalHours);
-        var hourlyRate = employe.Salary / FullTimeMonth;
-        GrossSalary = totalHours * hourlyRate;
+
+    public Payroll(Employe employe, DateOnly? time = null) {
+        Employe = employe;
+        EmployeId = employe.Id;
+        Month = time ?? DateOnly.FromDateTime(DateTime.UtcNow);
+        Status = PayrollStatus.Initial;
+    }
+
+    public Payroll Calculate(ICollection<TimeShift> shifts) {
+        var totalHours = (decimal)shifts.Sum(s => s.Duration);
+        var hourlyRate = Employe.Salary / FullTimeMonth;
+        GrossSalary = Math.Round(totalHours * hourlyRate, 2);
+        Status = PayrollStatus.Calculating;
+
         return this;
     }
 
@@ -52,7 +62,7 @@ internal class Payroll : AggregateRoot {
         return this;
     }
 
-    public Payroll Send(DateTime? time) {
+    public Payroll Send(DateTime? time = null) {
         if (Status != PayrollStatus.Aproved) {
             throw new ArgumentException("Only Aproved payrols can be send");
         }

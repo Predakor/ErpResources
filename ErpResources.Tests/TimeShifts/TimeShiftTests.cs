@@ -12,7 +12,7 @@ public class ShiftTests {
         var startTime = DateTime.UtcNow.AddHours(1);
         var endTime = startTime.AddHours(8);
 
-        var shift = new TimeShift(employeeId, startTime, endTime);
+        var shift = new TimeShift(employeeId, startTime, endTime).Schedule();
 
         shift.Events.Should().ContainSingle().Which.Should().BeOfType<ShiftScheduledEvent>();
 
@@ -41,5 +41,23 @@ public class ShiftTests {
         var canceledEvent = shift.Events.OfType<ShiftCanceledEvent>().First();
         canceledEvent.ShiftId.Should().Be(shift.Id);
         canceledEvent.reason.Should().Be("Employee requested");
+    }
+
+    [Fact]
+    public void Duration_Should_ShouldRoundSmallValues() {
+        var shift = new TimeShift(employeeId, DateTime.UtcNow, DateTime.UtcNow.AddHours(8).AddSeconds(10));
+
+
+        shift.Duration.Should().BePositive();
+        shift.Duration.Should().Be(8);
+    }
+    [Fact]
+    public void DurationWithReversedTimes_Should_Throw() {
+
+        Action act = () => {
+            var reversedShift = new TimeShift(employeeId, DateTime.UtcNow.AddHours(8), DateTime.UtcNow);
+        };
+
+        act.Should().Throw();
     }
 }

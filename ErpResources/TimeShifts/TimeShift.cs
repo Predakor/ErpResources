@@ -15,28 +15,35 @@ internal class TimeShift : AggregateRoot {
     public AppUser? Emplyoer { get; set; }
 
     public TimeShift(Guid emplyoerId, DateTime startTime, DateTime endTime) {
+        if (startTime > endTime) {
+            throw new ArgumentException("end time can't be greater than start time");
+        }
+
         EmplyoerId = emplyoerId;
         StartTime = startTime;
         EndTime = endTime;
         Status = TimeShiftStatus.Initial;
     }
 
-    public void Schedule() {
+    public TimeShift Schedule() {
         Status = TimeShiftStatus.Scheduled;
         AddEvent(new ShiftScheduledEvent(Id));
+        return this;
     }
 
-    public void Complete() {
+    public TimeShift Complete() {
         Status = TimeShiftStatus.Completed;
         AddEvent(new ShiftCompletedEvent(Id));
+        return this;
     }
 
-    public void Cancel(string reason) {
+    public TimeShift Cancel(string reason) {
         Status = TimeShiftStatus.Canceled;
         AddEvent(new ShiftCanceledEvent(Id, reason));
+        return this;
     }
 
-    public TimeSpan Duration => StartTime - EndTime;
+    public decimal Duration => (EndTime - StartTime).ToTotalHoursRounded();
 }
 
 enum TimeShiftStatus {
