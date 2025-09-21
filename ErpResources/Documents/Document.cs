@@ -12,18 +12,31 @@ internal sealed class Document : AggregateRoot {
 
     public Guid SignerId { get; private set; }
     public DateTime ProcessedAt { get; private set; }
-    public Employe ProcessedBy { get; private set; }
+    public Employe? ProcessedBy { get; private set; }
 
     public Document(string name, DocumentType type) {
         Name = name;
         Type = type;
         ReceivedAt = DateTime.UtcNow;
         Status = DocumentStatus.Initial;
+
+        if (Type is DocumentType.Request) {
+            Decision = DocumentDecision.None;
+        }
     }
 
     public Document Proccess(Guid employeId) {
+        if (Status is DocumentStatus.Archived) {
+            throw new InvalidOperationException("Document is already archived.");
+        }
+
+        if (Type is DocumentType.Request && Decision is DocumentDecision.None) {
+            throw new InvalidOperationException("Request must be decided before processing.");
+        }
+
         SignerId = employeId;
         ProcessedAt = DateTime.UtcNow;
+        Status = DocumentStatus.Processed;
         return this;
     }
 
@@ -31,7 +44,9 @@ internal sealed class Document : AggregateRoot {
         TimeSpan archiveTreshold = TimeSpan.FromDays(365 * 2);
         bool readyToArchive = DateTime.UtcNow - ProcessedAt > archiveTreshold;
         if (!readyToArchive) {
-            throw new InvalidOperationException("Document must be atleast 2 years old to be archived");
+            throw new InvalidOperationException(
+                "Document must be atleast 2 years old to be archived"
+            );
         }
 
         Status = DocumentStatus.Archived;
