@@ -1,8 +1,9 @@
-﻿using Gateway.TimeShifts;
+﻿using Core.Entities;
+using Gateway.TimeShifts;
 
 namespace Gateway.Employes;
 
-internal class Employe {
+internal class Employe : AggregateRoot {
     public string Position { get; protected set; }
     public decimal Salary { get; protected set; }
     public DateTime HireDate { get; protected set; }
