@@ -14,7 +14,13 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "esnext",
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+
+    "baseUrl": "src",
+    "paths": {
+      "@components/*": ["app/components/*"],
+      "@pages/*": ["app/pages/*"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
