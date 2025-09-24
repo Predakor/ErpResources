@@ -1,21 +1,21 @@
 import { Component, inject } from '@angular/core';
-import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '@services/auth.service';
 
 @Component({
-  selector: 'erp-login',
+  selector: 'erp-register-form',
   imports: [ReactiveFormsModule],
   template: `
-    <form [formGroup]="credentialsForm" (ngSubmit)="login()">
+    <form [formGroup]="credentialsForm" (ngSubmit)="register()">
       <input id="email" type="email" formControlName="email" />
-      <input id="password" type="password" formControlName="password" />
+      <input id="email" type="email" formControlName="password" />
 
       <button type="submit">Submit</button>
     </form>
   `,
   styles: ``,
 })
-export class Login {
+export class RegisterForm {
   authService = inject(AuthService);
 
   credentialsForm = new FormGroup({
@@ -23,7 +23,7 @@ export class Login {
     password: new FormControl(''),
   });
 
-  login() {
+  register() {
     console.log(this.credentialsForm.value);
 
     const data = this.credentialsForm.value;
@@ -37,6 +37,6 @@ export class Login {
       password: data.password,
     };
 
-    this.authService.login(credentials);
+    this.authService.register(credentials);
   }
 }

@@ -16,4 +16,10 @@ export const routes: Routes = [
       return m.Login;
     },
   },
+  {
+    path: 'register',
+    loadComponent: () => {
+      return import('./pages/auth/register/register').then((r) => r.Register);
+    },
+  },
 ];

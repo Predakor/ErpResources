@@ -1,15 +1,13 @@
 import { Component } from '@angular/core';
+import { RegisterForm } from '@components/auth/register.form/register.form';
 
 @Component({
   selector: 'erp-register',
-  imports: [],
+  imports: [RegisterForm],
   template: `
-    <p>
-      register works!
-    </p>
+    <erp-register-form />
+    <p>register works!</p>
   `,
-  styles: ``
+  styles: ``,
 })
-export class Register {
-
-}
+export class Register {}

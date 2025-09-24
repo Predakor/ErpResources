@@ -19,6 +19,8 @@
     "baseUrl": "src",
     "paths": {
       "@components/*": ["app/components/*"],
+      "@interceptors/*": ["app/interceptors/*"],
+      "@services/*": ["app/services/*"],
       "@pages/*": ["app/pages/*"]
     }
   },

@@ -11,6 +11,19 @@ builder.Services.AddMediatR(configuration => {
     configuration.RegisterServicesFromAssembly(typeof(Program).Assembly);
 });
 
+builder.Services.AddCors(options => {
+    string[] origins = ["http://localhost:4200"];
+    options.AddPolicy(
+        "CorsPolicy",
+        policy =>
+            policy
+                .WithOrigins(origins)
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials()
+    );
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAuthorization();
@@ -23,6 +36,8 @@ if (app.Environment.IsDevelopment()) {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("CorsPolicy");
 
 app.MapIdentityApi<IdentityUser>();
 app.UseHttpsRedirection();
