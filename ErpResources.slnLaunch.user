@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "ErpResources\\Gateway.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Client\\Client.esproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
