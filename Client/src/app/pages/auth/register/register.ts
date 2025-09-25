@@ -1,13 +1,36 @@
-import { Component } from '@angular/core';
-import { RegisterForm } from '@components/auth/register.form/register.form';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { FormComponent } from '@components/form/form.component';
+import { AuthService, Credentials } from '@services/auth.service';
+import { validatePassword } from 'app/Validators/password.validator';
 
 @Component({
   selector: 'erp-register',
-  imports: [RegisterForm],
+  imports: [FormComponent],
   template: `
-    <erp-register-form />
-    <p>register works!</p>
+    <erp-form [formConfig]="registerForm" [onSubmit]="register">
+      <ng-container form-title> Try Now </ng-container>
+      <ng-container form-submit> Register </ng-container>
+    </erp-form>
   `,
-  styles: ``,
 })
-export class Register {}
+export class Register {
+  formBuilder = inject(FormBuilder);
+  auth = inject(AuthService);
+
+  registerForm = this.formBuilder.group({
+    email: ['', Validators.email],
+    password: ['', validatePassword],
+  });
+
+  register = (credentials: Credentials) => {
+    this.auth.register(credentials).subscribe({
+      next(value) {
+        console.log(value);
+      },
+      error(err) {
+        console.error(err);
+      },
+    });
+  };
+}

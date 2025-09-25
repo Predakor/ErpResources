@@ -1,50 +1,32 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '@services/auth.service';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormComponent } from '@components/form/form.component';
+import { AuthService, Credentials } from '@services/auth.service';
+import { validatePassword } from 'app/Validators/password.validator';
 import { ButtonModule } from 'primeng/button';
-import { FloatLabel } from 'primeng/floatlabel';
-import { InputTextModule } from 'primeng/inputtext';
 @Component({
   selector: 'erp-login',
-  imports: [ReactiveFormsModule, ButtonModule, InputTextModule, FloatLabel],
+  imports: [ReactiveFormsModule, ButtonModule, FormComponent],
   template: `
-    <form [formGroup]="credentialsForm" (ngSubmit)="login()" class="flex flex-col gap-8">
-      <p-floatLabel>
-        <label>Email</label>
-        <input pInputText id="email" type="email" formControlName="email" />
-      </p-floatLabel>
-
-      <p-floatLabel>
-        <label>Password</label>
-        <input pInputText id="password" type="password" formControlName="password" />
-      </p-floatLabel>
-
-      <p-button type="submit">Submit</p-button>
-    </form>
+    <erp-form [formConfig]="credentialsForm" [onSubmit]="handleLogin">
+      <ng-container form-title>Welcome back</ng-container>
+      <ng-container form-submit>login</ng-container>
+    </erp-form>
   `,
 })
 export class Login {
   authService = inject(AuthService);
-  formBuilder = inject(FormBuilder);
+  formBuilder = inject(NonNullableFormBuilder);
 
   credentialsForm = this.formBuilder.group({
     email: ['', Validators.compose([Validators.email, Validators.required])],
-    password: [
-      '',
-      Validators.compose([Validators.minLength(6), Validators.maxLength(255), Validators.required]),
-    ],
+    password: ['', validatePassword],
   });
 
-  login() {
-    if (this.credentialsForm.invalid) {
-      return;
-    }
-
-    const data = this.credentialsForm.value as { email: string; password: string };
-
-    this.authService.login(data).subscribe({
+  handleLogin = (credentials: Credentials) => {
+    this.authService.login(credentials).subscribe({
       next: (res) => console.log(res),
       error: (err) => console.error(err),
     });
-  }
+  };
 }

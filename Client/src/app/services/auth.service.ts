@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 
-type Credentials = {
+export type Credentials = {
   email: string;
   password: string;
 };
@@ -21,6 +21,6 @@ export class AuthService {
   logout() {}
 
   register(credentials: Credentials) {
-    this.api.post('register', credentials);
+    return this.api.post('register', credentials);
   }
 }

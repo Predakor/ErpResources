@@ -1,31 +1,26 @@
-import { Component } from '@angular/core';
-import { User } from '../user/user';
-import { RouterLink } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { routes } from 'app/app.routes';
+import { MenuItem } from 'primeng/api';
+import { Menubar } from 'primeng/menubar';
+import { User } from '../user/user';
 
 @Component({
   selector: 'erp-header',
-  imports: [User, RouterLink],
+  imports: [User, Menubar],
   template: `
     <header>
-      <h1>Logo</h1>
-      <app-user [name]="'default'" />
-      <nav>
-        <ul class="navigation">
-          @for (route of appRoutes; track $index) {
-          <li routerLink="{{ route.path }}">{{ route.path || 'Home' }}</li>
-          }
-        </ul>
-      </nav>
+      <p-menubar [model]="items">
+        <ng-template #end>
+          <app-user [name]="'default'" />
+        </ng-template>
+      </p-menubar>
     </header>
-  `,
-  styles: `
-    .navigation {
-      display: flex;
-      gap: 2rem;
-    }
   `,
 })
 export class Header {
   appRoutes = routes;
+  items: MenuItem[] = this.appRoutes.map((route) => ({
+    label: route.path || 'Home',
+    routerLink: route.path,
+  }));
 }
