@@ -15,12 +15,12 @@ export class AuthService {
   me() {}
 
   login(credentials: Credentials) {
-    this.api.post('login', credentials).subscribe((r) => console.log(r));
+    return this.api.post('login', credentials);
   }
 
   logout() {}
 
   register(credentials: Credentials) {
-    this.api.post('register', credentials).subscribe((r) => console.log(r));
+    this.api.post('register', credentials);
   }
 }

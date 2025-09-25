@@ -11,7 +11,6 @@ import { Header } from './components/header/header';
       <router-outlet />
     </main>
   `,
-  styleUrl: './app.scss',
 })
 export class App {
   protected readonly title = signal('ErpFront');
