@@ -6,21 +6,17 @@ namespace Gateway.TimeShifts.Endpoints;
 
 internal static class TimeShiftEndpoints {
     public static void MapTimeShiftEndpoints(this IEndpointRouteBuilder endpoints) {
-        Func<HttpContext, string> getGreeting = (HttpContext httpContext) => {
-            return " Hello world";
-        };
+        var group = endpoints.MapGroup("/timeshifts").RequireAuthorization().WithOpenApi();
 
-        endpoints.MapGet("/", GetTimeShifts).WithName("Init").WithOpenApi();
-        endpoints.MapPost("/", CreateTimeShift).WithName("Create").WithOpenApi();
+        group.MapGet("/", GetTimeShifts).WithName("Init");
+        group.MapPost("/", CreateTimeShift).WithName("Create");
     }
 
     static async Task<IResult> GetTimeShifts(ISender sender) {
         var query = new GetAllShiftsQuery();
         return await sender
             .Send(query)
-            .MatchAsync(
-                result => Results.Ok(result),
-                error => Results.BadRequest(error.Message));
+            .MatchAsync(result => Results.Ok(result), error => Results.BadRequest(error.Message));
     }
 
     static async Task<IResult> CreateTimeShift(CreateShiftCommand command, ISender sender) {

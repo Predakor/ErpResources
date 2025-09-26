@@ -24,9 +24,6 @@ export class Login {
   });
 
   handleLogin = (credentials: Credentials) => {
-    this.authService.login(credentials).subscribe({
-      next: (res) => console.log(res),
-      error: (err) => console.error(err),
-    });
+    this.authService.login(credentials);
   };
 }

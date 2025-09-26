@@ -7,9 +7,17 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
+          "type": "component",
+          "flat": false,
           "style": "css",
           "inlineStyle": true,
-          "inlineTemplate": true
+          "inlineTemplate": true,
+          "path": "src/app/components"
+        },
+        "@schematics/angular:service": {
+          "type": "service",
+          "flat": false,
+          "path": "src/app/services"
         }
       },
       "root": "",
@@ -83,6 +91,33 @@
               }
             ],
             "styles": ["src/styles.css"]
+          }
+        }
+      }
+    },
+    "schematics": {
+      "projectType": "library",
+      "root": "projects/schematics",
+      "sourceRoot": "projects/schematics/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/schematics/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/schematics/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "tsConfig": "projects/schematics/tsconfig.spec.json",
+            "polyfills": ["zone.js", "zone.js/testing"]
           }
         }
       }

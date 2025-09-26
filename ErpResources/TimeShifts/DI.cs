@@ -8,7 +8,7 @@ internal static class DI {
     }
 
     public static WebApplication ConfigureTimeShiftsApi(this WebApplication app) {
-        app.MapGroup("/timeshifts").MapTimeShiftEndpoints();
+        app.MapTimeShiftEndpoints();
         return app;
     }
 }

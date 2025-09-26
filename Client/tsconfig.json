@@ -21,7 +21,12 @@
       "@components/*": ["app/components/*"],
       "@interceptors/*": ["app/interceptors/*"],
       "@services/*": ["app/services/*"],
-      "@pages/*": ["app/pages/*"]
+      "@pages/*": [
+        "app/pages/*"
+      ],
+      "schematics": [
+        "./dist/schematics"
+      ]
     }
   },
   "angularCompilerOptions": {
@@ -38,6 +43,12 @@
     },
     {
       "path": "./tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/schematics/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/schematics/tsconfig.spec.json"
     }
   ]
 }
