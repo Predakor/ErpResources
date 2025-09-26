@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormComponent } from '@components/form/form.component';
-import { AuthService, Credentials } from '@services/auth.service';
+import { AuthService, Credentials } from '@services/auth/auth.service';
 import { validatePassword } from 'app/Validators/password.validator';
 import { ButtonModule } from 'primeng/button';
 @Component({

@@ -9,12 +9,13 @@ import { authInterceptor } from '@interceptors/auth.interceptor';
 import Aura from '@primeuix/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { routes } from './app.routes';
+import { pathInterceptor } from '@interceptors/path.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
+    provideHttpClient(withFetch(), withInterceptors([pathInterceptor, authInterceptor])),
     providePrimeNG({ theme: { preset: Aura } }),
     provideRouter(routes),
   ],

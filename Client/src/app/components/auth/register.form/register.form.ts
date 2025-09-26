@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { AuthService } from '@services/auth.service';
+import { AuthService } from '@services/auth/auth.service';
 
 @Component({
   selector: 'erp-register-form',

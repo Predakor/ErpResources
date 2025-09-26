@@ -1,37 +1,36 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { TokenService } from '@services/token/token.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private api = inject(HttpClient);
-  private token: JWTToken | undefined | null;
-  private expiresAt: Date | undefined | null;
+  private token = inject(TokenService);
+
+  getToken = () => this.token.get()?.accessToken;
+
   me() {}
 
   login(credentials: Credentials) {
     return this.api.post<JWTToken>('login', credentials).subscribe({
       next: (res) => {
-        this.token = res;
-        const exp = Date.now() + res.expiresIn * 1000;
-        this.expiresAt = new Date(exp);
-
-        setTimeout(() => {
-          console.log('refreshing token');
-        }, res.expiresIn * 1000);
+        this.token.set(res);
       },
       error: (err) => console.error(err),
     });
   }
 
-  logout() {}
+  logout() {
+    this.token.clear();
+  }
 
   refresh = async () => {
     //refresh token
     //set properties
     //return something onSucces
-    return true;
+    return true as unknown as JWTToken;
   };
 
   register(credentials: Credentials) {
@@ -39,12 +38,16 @@ export class AuthService {
   }
 
   isLoged = async () => {
-    if (!this.token || !this.expiresAt) {
+    const accesToken = this.token.get();
+
+    if (!accesToken) {
       return false;
     }
 
-    if (this.expiresAt.getMilliseconds() < Date.now()) {
-      return await this.refresh();
+    if (this.token.isExpired()) {
+      const newToken = await this.refresh();
+      this.token.set(newToken);
+      return true;
     }
 
     return true;
@@ -55,6 +58,7 @@ export type Credentials = {
   email: string;
   password: string;
 };
+
 export interface JWTToken {
   tokenType: string;
   accessToken: string;
