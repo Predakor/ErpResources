@@ -12,7 +12,7 @@ public class ShiftTests {
         var startTime = DateTime.UtcNow.AddHours(1);
         var endTime = startTime.AddHours(8);
 
-        var shift = new TimeShift(employeeId, startTime, endTime).Schedule();
+        var shift = new TimeShift(employeeId, startTime, endTime, "").Schedule();
 
         shift.Events.Should().ContainSingle().Which.Should().BeOfType<ShiftScheduledEvent>();
 
@@ -22,7 +22,7 @@ public class ShiftTests {
 
     [Fact]
     public void CompletingShift_ShouldRaiseShiftCompletedEvent() {
-        var shift = new TimeShift(employeeId, DateTime.UtcNow.AddHours(-8), DateTime.UtcNow);
+        var shift = new TimeShift(employeeId, DateTime.UtcNow.AddHours(-8), DateTime.UtcNow, "");
 
         shift.Complete();
 
@@ -33,7 +33,7 @@ public class ShiftTests {
 
     [Fact]
     public void CancelingShift_ShouldRaiseShiftCanceledEvent() {
-        var shift = new TimeShift(employeeId, DateTime.UtcNow, DateTime.UtcNow.AddHours(8));
+        var shift = new TimeShift(employeeId, DateTime.UtcNow, DateTime.UtcNow.AddHours(8), "");
 
         shift.Cancel("Employee requested");
 
@@ -45,7 +45,7 @@ public class ShiftTests {
 
     [Fact]
     public void Duration_Should_ShouldRoundSmallValues() {
-        var shift = new TimeShift(employeeId, DateTime.UtcNow, DateTime.UtcNow.AddHours(8).AddSeconds(10));
+        var shift = new TimeShift(employeeId, DateTime.UtcNow, DateTime.UtcNow.AddHours(8).AddSeconds(10), "");
 
 
         shift.Duration.Should().BePositive();
@@ -55,7 +55,7 @@ public class ShiftTests {
     public void DurationWithReversedTimes_Should_Throw() {
 
         Action act = () => {
-            var reversedShift = new TimeShift(employeeId, DateTime.UtcNow.AddHours(8), DateTime.UtcNow);
+            var reversedShift = new TimeShift(employeeId, DateTime.UtcNow.AddHours(8), DateTime.UtcNow, "");
         };
 
         act.Should().Throw();

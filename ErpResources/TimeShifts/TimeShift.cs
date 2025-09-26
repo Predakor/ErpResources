@@ -5,24 +5,26 @@ using Gateway.TimeShifts.Events;
 namespace Gateway.TimeShifts;
 
 internal class TimeShift : AggregateRoot {
-    public Guid EmplyoerId { get; set; }
+    public Guid EmployeId { get; set; }
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
     public TimeSpan Breakes { get; set; }
     public TimeShiftStatus Status { get; set; }
+    public string Position { get; set; }
 
     //Nav props
     public AppUser? Emplyoer { get; set; }
 
-    public TimeShift(Guid emplyoerId, DateTime startTime, DateTime endTime) {
+    public TimeShift(Guid employeId, DateTime startTime, DateTime endTime, string position) {
         if (startTime > endTime) {
             throw new ArgumentException("end time can't be greater than start time");
         }
 
-        EmplyoerId = emplyoerId;
+        EmployeId = employeId;
         StartTime = startTime;
         EndTime = endTime;
         Status = TimeShiftStatus.Initial;
+        Position = position;
     }
 
     public TimeShift Schedule() {

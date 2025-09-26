@@ -11,8 +11,10 @@ internal class CreateShiftCommandHandler : IRequestHandler<CreateShiftCommand, G
 
     public async Task<Guid> Handle(CreateShiftCommand request, CancellationToken cancellationToken) {
         ArgumentNullException.ThrowIfNull(request);
+        Console.WriteLine(request.StartTime);
+        Console.WriteLine(request.EndTime);
 
-        var shift = new TimeShift(request.EmployeId, request.StartTime, request.EndTime);
+        var shift = new TimeShift(request.EmployeId, request.StartTime, request.EndTime, request.Position);
 
         await _repository.AddAsync(shift, cancellationToken);
         await _repository.SaveChangesAsync(cancellationToken);

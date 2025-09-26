@@ -11,27 +11,29 @@ import { AddShift } from '../add-shift/add-shift.component';
       <ng-template #header>
         <tr>
           <th>Employe</th>
+          <th>Start</th>
+          <th>End</th>
+          <th>Position</th>
         </tr>
       </ng-template>
-      <ng-template #body let-product>
+      <ng-template #body let-shift>
         <tr>
-          <td>{{ product.code }}</td>
-          <td>{{ product.name }}</td>
-          <td>{{ product.category }}</td>
-          <td>{{ product.quantity }}</td>
+          <td>{{ shift.employeId }}</td>
+          <td>{{ shift.startTime }}</td>
+          <td>{{ shift.endTime }}</td>
+          <td>{{ shift.position }}</td>
         </tr>
       </ng-template>
     </p-table>
     <erp-add-shift />
   `,
-  styles: ``,
 })
 export class shift implements OnInit {
   api = inject(HttpClient);
-  shifts = signal<shift[]>([]);
+  shifts = signal<Shift[]>([]);
   ngOnInit(): void {
-    this.api.get<shift[]>('timeshifts').subscribe({
-      next: this.shifts,
+    this.api.get<Shift[]>('timeshifts').subscribe({
+      next: (v) => this.shifts.set(v),
       error: console.error,
     });
   }
@@ -39,8 +41,8 @@ export class shift implements OnInit {
 
 export type Shift = {
   id: string;
-  start: Date;
-  end: Date;
+  startTime: Date;
+  endTime: Date;
   employeId: string;
-  role: string;
+  position: string;
 };

@@ -1,24 +1,37 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Button } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
+import { FieldConfig } from './form.model';
+import { FormService } from './form.service';
+import { DatePicker } from 'primeng/datepicker';
 
 @Component({
   selector: 'erp-form',
-  imports: [ReactiveFormsModule, Button, FloatLabel, InputTextModule],
+  imports: [ReactiveFormsModule, Button, FloatLabel, InputTextModule, DatePicker],
   template: `
     <form [formGroup]="formConfig()" (submit)="handleSubmit()" class="flex flex-col gap-8">
       <h2 class="text-3xl">
         <ng-content select="[form-title]"></ng-content>
       </h2>
 
-      @for (field of fields(); track field){
+      @for (field of fieldsConfig(); track field){
       <p-floatLabel>
-        <label [for]="field">{{ field }}</label>
-        <input [id]="field" pInputText type="text" [formControlName]="field" />
-        @if (fieldHasError(field)()) {
-        <span class="text-red-500">{{ fieldHasError(field)() }}</span>
+        <label [for]="field">{{ field.label }}</label>
+        @switch (field.type) { @case("date"){
+        <p-datepicker
+          [id]="field.name"
+          [showTime]="true"
+          [hourFormat]="'24'"
+          [iconDisplay]="'input'"
+          [showIcon]="true"
+          [formControlName]="field.name"
+        />
+        } @default {
+        <input [id]="field.name" pInputText [type]="field.type" [formControlName]="field.name" />
+        } } @if (fieldHasError(field.name)()) {
+        <span class="text-red-500">{{ fieldHasError(field.name)() }}</span>
         }
       </p-floatLabel>
       }
@@ -30,10 +43,11 @@ import { InputTextModule } from 'primeng/inputtext';
   `,
 })
 export class FormComponent<TForm extends Record<string, any>> {
-  formConfig = input.required<FormGroup<TForm>>();
+  mapper = inject(FormService);
+  fieldsConfig = input.required<FieldConfig[]>();
   onSubmit = input.required<(value: any) => void>();
 
-  fields = computed(() => Object.keys(this.formConfig().controls));
+  formConfig = computed(() => this.mapper.toFormGroup(this.fieldsConfig()));
 
   fieldHasError = (field: string) =>
     computed(() => {
