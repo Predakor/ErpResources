@@ -10,7 +10,7 @@ export class FormService {
   toFormGroup(configs: FieldConfig[]) {
     const group: any = {};
     configs.forEach((config) => {
-      group[config.name] = config.required
+      group[config.name] = !config.optional
         ? new FormControl(null, Validators.required)
         : new FormControl(null);
     });

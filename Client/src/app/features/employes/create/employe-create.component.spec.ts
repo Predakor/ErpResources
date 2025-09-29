@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CreateEmployePage } from './employe-create.component';
+import { validatePesel } from '@validators/pesel.validator';
+import { FormControl } from '@angular/forms';
 
 describe('EmployeCreateComponent', () => {
   let component: CreateEmployePage;
@@ -18,5 +20,26 @@ describe('EmployeCreateComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should invalidate pesel shorter or longer than 11 digits', () => {
+    const peselField = component.fields.find((f) => f.name === 'pesel');
+    expect(peselField).toBeTruthy();
+
+    const control = new FormControl('', peselField!.validator);
+
+    // too short
+    control.setValue('12345');
+    expect(control.valid).toBeFalse();
+    expect(control.errors?.['minlength']).toBeTruthy();
+
+    // too long
+    control.setValue('1234567890123');
+    expect(control.valid).toBeFalse();
+    expect(control.errors?.['maxlength']).toBeTruthy();
+
+    // exactly 11 and checksum valid
+    control.setValue('44051401458');
+    expect(control.valid).toBeTrue();
   });
 });

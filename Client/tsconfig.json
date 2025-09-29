@@ -18,15 +18,11 @@
 
     "baseUrl": "src",
     "paths": {
-      "@components/*": ["app/components/*"],
-      "@interceptors/*": ["app/interceptors/*"],
-      "@services/*": ["app/services/*"],
-      "@pages/*": [
-        "app/pages/*"
-      ],
-      "schematics": [
-        "./dist/schematics"
-      ]
+      "@components/*": ["app/shared/components/*"],
+      "@interceptors/*": ["app/shared/interceptors/*"],
+      "@validators/*": ["app/shared/validators/*"],
+      "@services/*": ["app/shared/services/*"],
+      "schematics": ["./dist/schematics"]
     }
   },
   "angularCompilerOptions": {

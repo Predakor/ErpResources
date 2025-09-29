@@ -2,6 +2,16 @@ import { ValidatorBuilder } from '../validatorBuilder';
 import textRules from './textRules';
 
 export class TextValidatorBuilder extends ValidatorBuilder {
+  withPattern(pattern: RegExp) {
+    const rule = textRules.withPattern(pattern);
+    return this.addValidator((v) => rule(v.value));
+  }
+
+  withLength(length: number) {
+    const rule = textRules.hasLength(length);
+    return this.addValidator((v) => rule(v.value));
+  }
+
   withMinLength(minLength: number) {
     const rule = textRules.hasMinLength(minLength);
     return this.addValidator((v) => rule(v.value));

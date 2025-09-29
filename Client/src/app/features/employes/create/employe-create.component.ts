@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { FieldConfig } from 'app/shared/components/form/form.model';
+import { FormComponent } from 'app/shared/components/form/form.component';
+import { validatePesel } from '@validators/pesel.validator';
 
 @Component({
   selector: 'erp-employe-create',
-  imports: [],
-  template: ` <p>Add New Employe</p> `,
-  styles: ``,
+  imports: [FormComponent],
+  template: ` <erp-form [fieldsConfig]="fields" [onSubmit]="submit"></erp-form> `,
 })
 export class CreateEmployePage {
   fields: FieldConfig[] = [
@@ -14,47 +15,66 @@ export class CreateEmployePage {
       name: 'firstName',
       label: 'First Name',
       type: 'text',
-      placeholder: 'Enter first name',
-      validator: Validators.required,
     },
     {
       name: 'lastName',
       label: 'Last Name',
       type: 'text',
-      placeholder: 'Enter last name',
-      validator: Validators.required,
+    },
+    {
+      name: 'pesel',
+      label: 'Pesel',
+      type: 'text',
+      validator: validatePesel,
     },
     {
       name: 'email',
       label: 'Email',
       type: 'email',
-      placeholder: 'Enter email address',
-      validator: Validators.compose([Validators.required, Validators.email])!,
+      validator: Validators.email,
     },
     {
       name: 'phone',
       label: 'Phone',
       type: 'text',
-      placeholder: 'Enter phone number',
-      validator: Validators.required,
     },
+
     {
       name: 'department',
       label: 'Department',
       type: 'text',
-      placeholder: 'Enter department',
     },
     {
       name: 'position',
       label: 'Position',
       type: 'text',
-      placeholder: 'Enter position',
     },
+
     {
       name: 'address',
       label: 'Address',
-      type: 'textarea',
-      placeholder: 'Enter address',
+      type: 'text',
+    },
+    {
+      name: 'streetName',
+      label: 'Street name',
+      type: 'text',
+    },
+    {
+      name: 'streetNumber',
+      label: 'Street Number',
+      type: 'number',
+    },
+    {
+      name: 'localNumber',
+      label: 'Local Number',
+      type: 'number',
+      optional: true,
     },
   ];
+
+  submit = (d: any) => {
+    
+    console.log(d);
+  };
 }

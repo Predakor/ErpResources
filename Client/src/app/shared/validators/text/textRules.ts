@@ -1,4 +1,18 @@
 export default {
+  withPattern: (pattern: RegExp) => {
+    return (value: string) => {
+      return pattern.test(value)
+        ? null
+        : { invalidPattern: `Must match following pattern ${pattern}` };
+    };
+  },
+
+  hasLength: (length: number) => {
+    return (value: string) => {
+      return value.length === length ? null : { length: `Must be ${length} characters long` };
+    };
+  },
+
   hasMinLength: (minLength: number) => {
     return (value: string) => {
       return value.length >= minLength
