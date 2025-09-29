@@ -7,7 +7,7 @@ import { Header } from './components/header/header';
   imports: [RouterOutlet, Header],
   template: `
     <erp-header />
-    <main>
+    <main class="flex flex-col gap-4">
       <router-outlet />
     </main>
   `,

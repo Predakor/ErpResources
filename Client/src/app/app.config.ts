@@ -6,8 +6,8 @@ import {
 } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
-import { authInterceptor } from '@interceptors/auth.interceptor';
-import { pathInterceptor } from '@interceptors/path.interceptor';
+import { authInterceptor } from 'app/shared/interceptors/auth.interceptor';
+import { pathInterceptor } from 'app/shared/interceptors/path.interceptor';
 import Aura from '@primeuix/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { routes } from './app.routes';

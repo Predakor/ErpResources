@@ -1,31 +1,32 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './guards/auth-guard';
+import { authGuard } from './shared/guards/auth-guard';
+import { employeRoutes } from 'app/features/employes/employe.routes';
 
 export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    loadComponent: async () => {
-      const m = await import('./pages/home/home');
-      return m.Home;
-    },
+    loadComponent: () => import('./features/home/home.component').then((r) => r.HomePage),
   },
   {
     path: 'login',
-    loadComponent: async () => {
-      const m = await import('./pages/auth/login/login');
-      return m.Login;
-    },
+    loadComponent: () => import('./features/auth/login/login').then((r) => r.Login),
   },
   {
     path: 'register',
-    loadComponent: () => {
-      return import('./pages/auth/register/register').then((r) => r.Register);
-    },
+    loadComponent: () => import('./features/auth/register/register').then((r) => r.Register),
   },
   {
     path: 'shifts',
-    loadComponent: () => import('./pages/shifts/shifts.page').then((r) => r.ShiftsPage),
+    loadComponent: () => import('./features/shifts/shifts.page').then((r) => r.ShiftsPage),
     canActivate: [authGuard],
+  },
+  {
+    path: 'employes',
+    loadComponent: () =>
+      import('./features/employes/employes-layout.component').then((r) => r.EmployesLayout),
+
+    canActivate: [authGuard],
+    children: employeRoutes,
   },
 ];

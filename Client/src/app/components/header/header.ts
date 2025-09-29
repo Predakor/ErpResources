@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { routes } from 'app/app.routes';
 import { MenuItem } from 'primeng/api';
 import { Menubar } from 'primeng/menubar';
-import { User } from '../user/user';
+import { User } from '../../shared/components/user/user';
+import { toTitleCase } from 'app/shared/utils/stringExtentions';
 
 @Component({
   selector: 'erp-header',
@@ -20,7 +21,7 @@ import { User } from '../user/user';
 export class Header {
   appRoutes = routes;
   items: MenuItem[] = this.appRoutes.map((route) => ({
-    label: route.path || 'Home',
+    label: toTitleCase(route.path || 'Home'),
     routerLink: route.path,
   }));
 }
