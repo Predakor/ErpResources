@@ -1,8 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { CreateEmployePage } from './employe-create.component';
-import { validatePesel } from '@validators/pesel.validator';
 import { FormControl } from '@angular/forms';
+import { CreateEmployePage } from './employe-create.component';
 
 describe('EmployeCreateComponent', () => {
   let component: CreateEmployePage;
@@ -30,16 +28,16 @@ describe('EmployeCreateComponent', () => {
 
     // too short
     control.setValue('12345');
-    expect(control.valid).toBeFalse();
+    expect(control.valid).toBeFalsy();
     expect(control.errors?.['minlength']).toBeTruthy();
 
     // too long
     control.setValue('1234567890123');
-    expect(control.valid).toBeFalse();
+    expect(control.valid).toBeFalsy();
     expect(control.errors?.['maxlength']).toBeTruthy();
 
     // exactly 11 and checksum valid
     control.setValue('44051401458');
-    expect(control.valid).toBeTrue();
+    expect(control.valid).toBeTruthy();
   });
 });

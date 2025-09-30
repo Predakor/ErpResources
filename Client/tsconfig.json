@@ -23,7 +23,10 @@
       "@validators/*": ["app/shared/validators/*"],
       "@services/*": ["app/shared/services/*"],
       "schematics": ["./dist/schematics"]
-    }
+    },
+
+    "types": ["jest"],
+    "esModuleInterop": true
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

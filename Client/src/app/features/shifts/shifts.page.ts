@@ -10,6 +10,5 @@ import { shift } from 'app/features/shifts/components/shift/shift.component';
       <erp-shift />
     </div>
   `,
-  styles: ``,
 })
 export class ShiftsPage {}

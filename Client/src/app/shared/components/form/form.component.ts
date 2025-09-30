@@ -16,24 +16,35 @@ import { DatePicker } from 'primeng/datepicker';
         <ng-content select="[form-title]"></ng-content>
       </h2>
 
-      @for (field of fieldsConfig(); track field){
-      <p-floatLabel>
-        <label [for]="field">{{ field.label }}</label>
-        @switch (field.type) { @case("date"){
-        <p-datepicker
-          [id]="field.name"
-          [showTime]="true"
-          [hourFormat]="'24'"
-          [iconDisplay]="'input'"
-          [showIcon]="true"
-          [formControlName]="field.name"
-        />
-        } @default {
-        <input [id]="field.name" pInputText [type]="field.type" [formControlName]="field.name" />
-        } } @if (fieldHasError(field.name)()) {
-        <span class="text-red-500">{{ fieldHasError(field.name)() }}</span>
-        }
-      </p-floatLabel>
+      @for (field of fieldsConfig(); track field) {
+        <p-floatLabel>
+          <label [for]="field.name">{{ field.label }}</label>
+          @switch (field.type) {
+            @case ('date') {
+              <p-datepicker
+                [id]="field.name"
+                [showTime]="true"
+                [hourFormat]="'24'"
+                [iconDisplay]="'input'"
+                [showIcon]="true"
+                [formControlName]="field.name"
+              />
+            }
+            @default {
+              <input
+                [id]="field.name"
+                pInputText
+                [type]="field.type"
+                [formControlName]="field.name"
+              />
+            }
+          }
+          @if (fieldHasError(field.name)()) {
+            <span class="text-red-500" data-testID="field-error">{{
+              fieldHasError(field.name)()
+            }}</span>
+          }
+        </p-floatLabel>
       }
 
       <p-button type="submit">

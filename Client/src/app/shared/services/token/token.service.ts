@@ -8,20 +8,24 @@ const tokenKey = 'authKey';
 })
 export class TokenService {
   private token: JWTToken | undefined;
-  private expiresAt: Date | undefined;
+  private _expiresAt: Date | undefined;
+
+  public get expiresAt() {
+    return this._expiresAt;
+  }
 
   isExpired() {
-    if (!this.expiresAt || !this.token) {
+    if (!this._expiresAt || !this.token) {
       return true;
     }
-    return Date.now() > this.expiresAt.getTime();
+    return Date.now() > this._expiresAt.getTime();
   }
 
   set(token: JWTToken) {
     this.token = token;
 
     const tokenExpiresInMs = token.expiresIn * 1000;
-    this.expiresAt = new Date(Date.now() + tokenExpiresInMs);
+    this._expiresAt = new Date(Date.now() + tokenExpiresInMs);
 
     sessionStorage.setItem(tokenKey, JSON.stringify(token));
 
@@ -47,7 +51,7 @@ export class TokenService {
 
   clear() {
     this.token = undefined;
-    this.expiresAt = undefined;
+    this._expiresAt = undefined;
     sessionStorage.removeItem(tokenKey);
   }
 }

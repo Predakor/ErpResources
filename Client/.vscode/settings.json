@@ -1,7 +1,0 @@
-{
-  "karmaExplorer.karmaConfig": "${workspaceFolder}/Client/ErpFront/karma.conf.js",
-  "karmaExplorer.autoStart": true,
-  "karmaExplorer.runOptions": {
-    "singleRun": false
-  }
-}
